@@ -7,12 +7,6 @@ import { cn } from "@/lib/utils";
 
 type Theme = "light" | "dark";
 
-/**
- * The theme lives on <html>, written by the inline script before React runs.
- * That makes the DOM the source of truth rather than React state, so it is read
- * through useSyncExternalStore: no effect-driven setState, and no hydration
- * mismatch because the server snapshot is explicitly null.
- */
 function subscribe(onChange: () => void) {
   const observer = new MutationObserver(onChange);
   observer.observe(document.documentElement, {
@@ -30,8 +24,6 @@ const getServerSnapshot = (): Theme | null => null;
 export function ThemeToggle({ className }: { className?: string }) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  // Follow the OS until the visitor makes an explicit choice. This only writes
-  // to the DOM; the observer above turns that into a re-render.
   useEffect(() => {
     const query = window.matchMedia("(prefers-color-scheme: dark)");
 

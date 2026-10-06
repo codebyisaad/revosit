@@ -6,10 +6,6 @@ import { fadeUp, inView, stagger } from "@/lib/motion";
 
 type ElementKey = "div" | "ul" | "li" | "span" | "section";
 
-/**
- * Only the animation props are forwarded — no element-specific DOM props — so
- * the same object is assignable to every motion element below.
- */
 type MotionElementProps = Pick<
   MotionProps,
   "variants" | "initial" | "animate" | "whileInView" | "viewport" | "transition"
@@ -19,10 +15,6 @@ type MotionElementProps = Pick<
   children?: React.ReactNode;
 };
 
-/**
- * Renders one of a fixed set of motion elements. Written as a switch rather
- * than a lookup so no component is constructed during render.
- */
 function MotionElement({ as = "div", ...props }: MotionElementProps) {
   switch (as) {
     case "ul":
@@ -46,7 +38,6 @@ type RevealProps = {
   as?: ElementKey;
 };
 
-/** Fades its content up once, the first time it scrolls into view. */
 export function Reveal({
   children,
   className,
@@ -69,10 +60,6 @@ export function Reveal({
   );
 }
 
-/**
- * Reveals descendant <RevealItem> elements in sequence. Use when a list should
- * cascade rather than appear all at once.
- */
 export function RevealGroup({
   children,
   className,

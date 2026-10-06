@@ -2,13 +2,6 @@
 
 import { motion, useScroll, useSpring } from "motion/react";
 
-/**
- * A hairline of accent across the very top, tracking read position.
- *
- * Spring-smoothed so it glides rather than snapping to every scroll event, and
- * hidden from assistive tech — it duplicates information the scrollbar already
- * conveys.
- */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {

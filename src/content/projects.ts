@@ -1,11 +1,3 @@
-/**
- * Arxiron is a real project and is described from its own README.
- *
- * The three entries after it are still SAMPLE CONTENT — anonymised sector
- * profiles rather than named clients, so nothing there claims a real
- * engagement. Replace them with your own work, and get written sign-off before
- * naming a client or publishing a metric.
- */
 export type Project = {
   slug: string;
   client: string;
@@ -18,14 +10,8 @@ export type Project = {
   approach: string[];
   results: { label: string; value: string }[];
   tech: string[];
-  /** Hue (0-360) driving the generated cover artwork. */
   hue: number;
-  /**
-   * A real screenshot, when we have one. Projects without it fall back to the
-   * generated cover keyed on `hue`, so the grid never has a gap.
-   */
   cover?: { src: string; width: number; height: number; alt: string };
-  /** Shown on the case study when the work is publicly reachable. */
   liveUrl?: string;
 };
 

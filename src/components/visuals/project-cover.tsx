@@ -3,18 +3,12 @@ import { cn } from "@/lib/utils";
 const W = 640;
 const H = 420;
 
-/**
- * Generated cover artwork for a case study. Everything is drawn from the
- * project's `hue` and a variant index, so projects get distinct, on-brand
- * imagery with no image assets to ship or optimise.
- */
 export function ProjectCover({
   id,
   hue,
   variant = 0,
   className,
 }: {
-  /** Unique per instance — namespaces the gradient ids. */
   id: string;
   hue: number;
   variant?: number;

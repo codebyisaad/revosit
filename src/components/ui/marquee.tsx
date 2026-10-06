@@ -1,10 +1,5 @@
 import { cn } from "@/lib/utils";
 
-/**
- * Infinite horizontal ticker. The item list is rendered twice so the CSS
- * translate can loop at -50% without a visible seam; the clone is hidden
- * from assistive tech.
- */
 export function Marquee({
   items,
   className,

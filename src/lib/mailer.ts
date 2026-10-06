@@ -1,28 +1,13 @@
 import nodemailer, { type Transporter } from "nodemailer";
 import { site } from "@/content/site";
 
-/**
- * SMTP configuration, read once per process.
- *
- * SMTP_USER / SMTP_PASS are an account and an app password — not a login
- * password. Zoho requires the app-password form once 2FA is on and rejects the
- * account password outright.
- *
- * SMTP_HOST is region-specific on Zoho: smtp.zoho.com (US), smtp.zoho.eu (EU),
- * smtp.zoho.in (IN), smtp.zoho.com.au (AU). Using the wrong region authenticates
- * against the wrong datacentre and fails with a misleading credentials error.
- */
 function readConfig() {
-  // Only the account and its app password are mandatory; the rest have
-  // sensible defaults so .env stays as small as possible.
   const host = process.env.SMTP_HOST?.trim() || "smtp.zoho.com";
   const user = process.env.SMTP_USER?.trim();
   const pass = process.env.SMTP_PASS?.trim();
 
   if (!user || !pass) return null;
 
-  // 465 is implicit TLS; 587 upgrades with STARTTLS. Getting `secure` wrong for
-  // the port is the usual cause of a hang rather than an error.
   const port = Number(process.env.SMTP_PORT ?? 465);
 
   return {
@@ -35,15 +20,6 @@ function readConfig() {
   };
 }
 
-/**
- * CONTACT_FROM may be a full address, a "Name <addr>" pair, or — a common slip —
- * just a display name. A bare name would build an invalid From header and get
- * the message rejected at the provider, so pair it with the authenticated
- * account rather than failing on it.
- *
- * Zoho requires the sending address to be the authenticated mailbox or one of
- * its verified aliases, so `user` is always the right thing to fall back to.
- */
 function resolveFrom(configured: string | undefined, user: string) {
   if (!configured) return `${site.name} <${user}>`;
   if (configured.includes("@")) return configured;
@@ -76,7 +52,6 @@ export type DeliveryResult =
   | { delivered: false; reason: "not-configured" }
   | { delivered: false; reason: "failed"; error: unknown };
 
-/** Escapes untrusted text before it goes into the HTML part of the email. */
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -88,8 +63,6 @@ function escapeHtml(value: string) {
 export async function sendEnquiry(enquiry: Enquiry): Promise<DeliveryResult> {
   const config = readConfig();
 
-  // No credentials yet: the caller still reports success to the visitor and
-  // logs the enquiry, so the form is never a dead end during setup.
   if (!config) return { delivered: false, reason: "not-configured" };
 
   const rows: [string, string][] = [
@@ -123,14 +96,11 @@ export async function sendEnquiry(enquiry: Enquiry): Promise<DeliveryResult> {
     const info = await getTransport(config).sendMail({
       from: config.from,
       to: config.to,
-      // Hitting reply goes to the person who filled the form, not to ourselves.
       replyTo: `${enquiry.name} <${enquiry.email}>`,
       subject: `New enquiry — ${enquiry.name}${enquiry.company ? ` (${enquiry.company})` : ""}`,
       text,
       html,
     });
-    // Logged on purpose: the only other record that a enquiry left the box is
-    // in Zoho's sent folder, which is awkward to check when one goes missing.
     console.info("[contact] delivered", {
       messageId: info.messageId,
       from: config.from,
@@ -145,7 +115,6 @@ export async function sendEnquiry(enquiry: Enquiry): Promise<DeliveryResult> {
       accepted: (info.accepted ?? []).map(String),
     };
   } catch (error) {
-    // Drop the cached transport so the next attempt rebuilds the connection.
     cached = null;
     return { delivered: false, reason: "failed", error };
   }

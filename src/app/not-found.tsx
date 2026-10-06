@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Bloom } from "@/components/visuals/backdrop";
-import { MascotIdle } from "@/components/mascot/mascot-idle";
+import { MascotIdle } from "@/components/mascot/mascot-scenes";
 
 export const metadata: Metadata = {
   title: "Page not found",

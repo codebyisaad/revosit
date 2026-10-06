@@ -29,7 +29,6 @@ type SharedProps = {
 type AnchorRest = Omit<React.ComponentPropsWithoutRef<typeof Link>, keyof SharedProps>;
 type ButtonRest = Omit<React.ComponentPropsWithoutRef<"button">, keyof SharedProps>;
 
-/** Renders a link when `href` is supplied, otherwise a native button. */
 export function Button({
   variant = "primary",
   size = "md",

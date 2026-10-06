@@ -92,8 +92,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      // The inline theme script writes a class onto <html> before hydration,
-      // which React would otherwise flag as a mismatch.
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >

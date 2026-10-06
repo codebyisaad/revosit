@@ -50,7 +50,6 @@ export function SectionHeading({
   );
 }
 
-/** Thin divider used between stacked sections. */
 export function Rule({ className }: { className?: string }) {
   return <div aria-hidden className={cn("h-px w-full bg-line", className)} />;
 }

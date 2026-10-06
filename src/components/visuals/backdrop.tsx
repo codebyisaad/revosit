@@ -1,9 +1,5 @@
 import { cn } from "@/lib/utils";
 
-/**
- * Soft accent bloom used behind hero and CTA bands. Pure CSS gradients, so it
- * costs nothing to load and scales to any viewport.
- */
 export function Bloom({ className }: { className?: string }) {
   return (
     <div
@@ -17,7 +13,6 @@ export function Bloom({ className }: { className?: string }) {
   );
 }
 
-/** Repeating hairline grid for full-width bands. */
 export function GridBand({ className }: { className?: string }) {
   return (
     <div

@@ -49,7 +49,6 @@ export function PageHeader({
   );
 }
 
-/** Narrow variant for case study pages, where the cover art carries the visual weight. */
 export function PageIntro({ children }: { children: React.ReactNode }) {
   return <Reveal className="max-w-3xl">{children}</Reveal>;
 }

@@ -21,15 +21,12 @@ export function SiteHeader() {
 
   useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 12));
 
-  // Close the mobile panel on navigation, adjusted during render rather than
-  // in an effect so it never causes a second paint with the panel still open.
   const [renderedPath, setRenderedPath] = useState(pathname);
   if (renderedPath !== pathname) {
     setRenderedPath(pathname);
     setOpen(false);
   }
 
-  // Prevent background scroll while the panel is open.
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {

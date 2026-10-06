@@ -1,12 +1,10 @@
 import { site } from "@/content/site";
 import { services } from "@/content/services";
 
-/** Renders a JSON-LD graph. Next hoists this into the document as-is. */
 export function JsonLd({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"
-      // The payload is built from local content, never user input.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );

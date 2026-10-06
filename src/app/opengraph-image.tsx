@@ -5,7 +5,6 @@ export const alt = `${site.name} — ${site.tagline}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/** Shared social card for every route that does not define its own. */
 export default function OpengraphImage() {
   return new ImageResponse(
     (

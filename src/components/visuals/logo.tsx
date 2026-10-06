@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { site } from "@/content/site";
 
-/** Geometric mark: an orbiting node around a tilted core. */
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg

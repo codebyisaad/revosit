@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 
-/** Small mono label that opens a section. */
 export function Eyebrow({
   children,
   className,

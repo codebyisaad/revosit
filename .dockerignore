@@ -14,6 +14,12 @@ npm-debug.log*
 next-env.d.ts
 .DS_Store
 
+# Preview-only routes. A runtime NODE_ENV guard is not enough on its own:
+# Next prerenders the route anyway and still answers 200 with the content in
+# the RSC payload. Keeping them out of the build context is what guarantees
+# they cannot reach production.
+src/app/dev
+
 README.md
 AGENTS.md
 CLAUDE.md

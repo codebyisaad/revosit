@@ -21,13 +21,11 @@ export type ContactPayload = {
   service: string;
   budget: string;
   message: string;
-  /** Hidden field — only bots fill it in. */
   referrer?: string;
 };
 
 export type FieldErrors = Partial<Record<keyof ContactPayload, string>>;
 
-/** Deliberately permissive: catches typos without rejecting valid exotic addresses. */
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const MAX = { name: 120, email: 200, company: 160, message: 4000 };

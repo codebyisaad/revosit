@@ -2,14 +2,6 @@ import { NextResponse } from "next/server";
 import { validateContact } from "@/lib/contact";
 import { sendEnquiry } from "@/lib/mailer";
 
-/**
- * Receives contact submissions and emails them over SMTP.
- *
- * Delivery is optional by design: without SMTP credentials the submission is
- * still validated and logged, and the visitor still gets a success state. That
- * keeps the form usable in development and on a deploy whose mailbox is not
- * set up yet.
- */
 export async function POST(request: Request) {
   let body: unknown;
 
@@ -21,7 +13,6 @@ export async function POST(request: Request) {
 
   const { errors, value } = validateContact(body as Record<string, string>);
 
-  // Honeypot: accept and discard so bots get no signal from the response.
   if (value.referrer) {
     return NextResponse.json({ ok: true, delivered: false });
   }

@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { ACTIVITIES } from "@/components/mascot/activities";
-import { MascotStill } from "@/components/mascot/mascot-still";
-import { MascotLoader } from "@/components/mascot/mascot-loader-client";
+import { Mascot } from "@/components/mascot/mascot";
+import { MascotLoader } from "@/components/mascot/mascot-scenes";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
-/** Every mascot state on one page, so the design can be judged side by side. */
 export default function MascotPreview() {
   return (
     <Container className="py-16">
@@ -35,7 +34,7 @@ export default function MascotPreview() {
               key={activity}
               className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-paper-raised p-6"
             >
-              <MascotStill activity={activity} />
+              <Mascot activity={activity} className="h-36 w-36" />
               <span className="font-mono text-[0.6875rem] tracking-[0.14em] text-ink-faint uppercase">
                 {activity}
               </span>
@@ -54,7 +53,7 @@ export default function MascotPreview() {
               key={activity}
               className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-paper-raised p-6"
             >
-              <MascotStill activity={activity} pose="running" />
+              <Mascot activity={activity} pose="running" className="h-36 w-36" />
               <span className="font-mono text-[0.6875rem] tracking-[0.14em] text-ink-faint uppercase">
                 {activity}
               </span>

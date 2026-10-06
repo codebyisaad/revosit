@@ -1,7 +1,3 @@
-/**
- * Single source of truth for company details, navigation and SEO defaults.
- * Update values here and they propagate to metadata, structured data and the UI.
- */
 export const site = {
   name: "Revosit",
   legalName: "Revosit",
@@ -11,7 +7,6 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://revosit.com",
   email: "support@revosit.com",
   locale: "en_US",
-  // TODO: confirm before launch — surfaced in Organization structured data.
   foundingYear: 2021,
   social: {
     linkedin: "https://www.linkedin.com/company/revosit",
@@ -101,7 +96,6 @@ export const differentiators = [
   },
 ] as const;
 
-/** Grouped capability list for the About page. */
 export const stackGroups = [
   {
     discipline: "Product engineering",

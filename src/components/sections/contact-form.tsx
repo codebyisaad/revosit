@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MascotLoader } from "@/components/mascot/mascot-loader-client";
+import { MascotLoader } from "@/components/mascot/mascot-scenes";
 import {
   budgetOptions,
   serviceOptions,
@@ -28,7 +28,6 @@ const empty: ContactPayload = {
 
 type Status = "idle" | "submitting" | "sent" | "error";
 
-/** Tab order, so the earliest invalid field is the one we jump to. */
 const fieldOrder: (keyof ContactPayload)[] = ["name", "email", "company", "message"];
 
 function focusFirstError(errors: FieldErrors) {
@@ -50,7 +49,6 @@ export function ContactForm() {
       >,
     ) => {
       setValues((prev) => ({ ...prev, [field]: event.target.value }));
-      // Clear the error as soon as the user starts fixing the field.
       setErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
     };
 
@@ -225,7 +223,6 @@ export function ContactForm() {
               />
             </Field>
 
-            {/* Honeypot — hidden from users and from assistive tech. */}
             <div aria-hidden className="hidden">
               <label htmlFor="referrer">Referrer</label>
               <input

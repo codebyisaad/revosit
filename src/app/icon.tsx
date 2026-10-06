@@ -3,7 +3,6 @@ import { ImageResponse } from "next/og";
 export const size = { width: 512, height: 512 };
 export const contentType = "image/png";
 
-/** Generated at build time so there is no binary icon to keep in sync with the brand. */
 export default function Icon() {
   return new ImageResponse(
     (

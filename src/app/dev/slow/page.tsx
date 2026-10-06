@@ -1,14 +1,7 @@
 import { Container } from "@/components/ui/container";
 
-// Opting out of static generation so the delay below actually runs per request
-// rather than once at build time.
 export const dynamic = "force-dynamic";
 
-/**
- * A deliberately slow route. Navigating here from the nav exercises the real
- * App Router loading boundary — src/app/dev/slow/loading.tsx — rather than a
- * component rendered in isolation.
- */
 export default async function SlowPage() {
   await new Promise((resolve) => setTimeout(resolve, 6000));
 
