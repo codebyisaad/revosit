@@ -1,0 +1,27 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        # Baked in at build time. Change it here, then `docker compose up -d --build`.
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://revosit.com}
+    image: revosit-web
+    container_name: revosit-web
+    restart: unless-stopped
+
+    # Loopback only, matching every other service on this box: nginx stays the
+    # single public door. Dropping the 127.0.0.1 prefix would publish 8099 to
+    # the internet and bypass the rate limits in the vhost.
+    ports:
+      - "127.0.0.1:8099:3000"
+
+    # Secrets come from .env as a file, deliberately not through `environment:`
+    # with ${...} interpolation. App passwords routinely contain '$', and Compose
+    # would eat it — passing the file through hands the value over untouched.
+    #
+    # All runtime-only: `docker compose up -d` picks up a changed .env with no
+    # rebuild. Absent credentials the form still validates and succeeds and logs
+    # the enquiry, so it is never a dead end.
+    env_file:
+      - path: .env
+        required: false

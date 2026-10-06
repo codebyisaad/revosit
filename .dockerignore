@@ -1,0 +1,22 @@
+# Build context should carry source only — everything below is rebuilt,
+# irrelevant to the image, or must never be baked into a layer.
+node_modules
+.next
+.git
+.gitignore
+
+# Secrets. .env.example is harmless but there is no reason to ship it.
+.env
+.env.*
+
+npm-debug.log*
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+
+README.md
+AGENTS.md
+CLAUDE.md
+Dockerfile
+.dockerignore
+docker-compose.yml
