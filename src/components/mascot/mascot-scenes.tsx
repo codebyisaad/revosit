@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   ACTIVITY_CAPTIONS,
@@ -9,21 +9,12 @@ import {
 } from "@/components/mascot/activities";
 import { Mascot } from "@/components/mascot/mascot";
 import { MascotGround } from "@/components/mascot/mascot-ground";
+import { useMounted } from "@/lib/use-mounted";
 import { cn } from "@/lib/utils";
 
 const RUN_DURATION = 3.2;
 
 const DWELL_MS = 5200;
-
-const noopSubscribe = () => () => {};
-
-function useMounted() {
-  return useSyncExternalStore(
-    noopSubscribe,
-    () => true,
-    () => false,
-  );
-}
 
 export function MascotLoader({
   className,

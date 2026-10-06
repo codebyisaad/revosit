@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
+import { ScrollRail } from "@/components/layout/scroll-rail";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteSplash } from "@/components/layout/site-splash";
@@ -107,6 +108,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <SiteSplash />
         <ScrollProgress />
+        <ScrollRail />
         <SiteHeader />
         <main id="main" className="flex-1">
           {children}

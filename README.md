@@ -205,6 +205,17 @@ repeat visit. The intro does not become the LCP element — LCP does not account
 for occlusion by an overlay, so the `h1` underneath still counts. Core Web Vitals
 are effectively unchanged; the 1.5s is perceived wait, not measured regression.
 
+## The scroll rail
+
+On screens from `xl` up, Revo rides a hairline rail in the left gutter, one node
+per section, filling behind as you scroll. The plain progress bar at the top
+takes over below that breakpoint — only ever one of the two is shown.
+
+Section positions are measured once by a `ResizeObserver` on `document.body`
+rather than on every scroll frame, and the mascot's travel is driven by a motion
+value, so scrolling does not re-render React. Decorative and `aria-hidden`
+throughout; the sections underneath reveal on their own and never depend on it.
+
 ## Design system
 
 Tokens live in the `@theme` block of `src/app/globals.css` — colours in oklch, one
