@@ -240,12 +240,27 @@
   animation: splash-out 0.55s var(--ease-out-expo) forwards;
 }
 
+.site-splash[data-leaving="true"] > * {
+  animation: splash-content-out 0.22s ease-in forwards;
+}
+
+.splash-active .scroll-rail {
+  opacity: 0;
+}
+
 @keyframes splash-run {
   from {
     left: -20%;
   }
   to {
     left: 110%;
+  }
+}
+
+@keyframes splash-content-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
   }
 }
 

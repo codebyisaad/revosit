@@ -81,7 +81,7 @@ export function ScrollRail() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed left-12 z-40 hidden xl:block"
+      className="scroll-rail pointer-events-none fixed left-12 z-40 hidden transition-opacity duration-300 xl:block"
       style={{ top: RAIL_TOP, bottom: RAIL_BOTTOM }}
     >
       <div className="relative h-full w-px bg-line">
