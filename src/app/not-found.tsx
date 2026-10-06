@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Bloom } from "@/components/visuals/backdrop";
+import { MascotIdle } from "@/components/mascot/mascot-idle";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -15,6 +16,7 @@ export default function NotFound() {
       <Bloom />
 
       <Container>
+        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="max-w-xl">
           <Eyebrow>Error 404</Eyebrow>
           <h1 className="mt-6 text-4xl leading-[1.08] sm:text-5xl">
@@ -29,6 +31,11 @@ export default function NotFound() {
             <Button href="/projects" variant="secondary">
               See our projects
             </Button>
+          </div>
+        </div>
+
+          <div className="flex justify-center lg:justify-end">
+            <MascotIdle />
           </div>
         </div>
       </Container>

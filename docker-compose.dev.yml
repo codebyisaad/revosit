@@ -1,0 +1,41 @@
+# Local development. Hot reload, source bind-mounted, no production build.
+#
+#   docker compose -f docker-compose.dev.yml up
+#   -> http://localhost:3000
+#
+# Kept as its own file rather than an override so that a bare
+# `docker compose up` always means production and can never be confused
+# with this.
+name: revosit-dev
+
+services:
+  web:
+    build:
+      context: .
+      target: dev
+    container_name: revosit-dev
+    ports:
+      - "3000:3000"
+
+    volumes:
+      # Source from the host, so edits reload instantly.
+      - .:/app
+      # Anonymous volumes mask the host's copies: node_modules is built for
+      # Linux inside the image and would be the wrong architecture if the
+      # macOS one shadowed it, and a shared .next corrupts the prod build.
+      - /app/node_modules
+      - /app/.next
+
+    environment:
+      # Absolute URLs, canonical tags and the sitemap all point at localhost
+      # here, so nothing in dev links out to production.
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      NEXT_TELEMETRY_DISABLED: "1"
+      # Bind mounts on macOS and Windows do not deliver inotify events.
+      WATCHPACK_POLLING: "true"
+
+    # Optional: drop a .env in beside this file to exercise the contact form
+    # against a real mailbox. Without it the form logs instead of sending.
+    env_file:
+      - path: .env
+        required: false

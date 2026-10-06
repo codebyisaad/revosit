@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/visuals/logo";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { nav, site } from "@/content/site";
 import { ease } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -84,6 +85,8 @@ export function SiteHeader() {
             </nav>
 
             <div className="flex items-center gap-2">
+              <ThemeToggle />
+
               <Button href="/contact" size="sm" className="hidden md:inline-flex">
                 Start a project
               </Button>

@@ -12,6 +12,20 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 ############################################################
+# dev — hot-reloading local server, used by docker-compose.dev.yml.
+# Source is bind-mounted over this layer at run time; the COPY here
+# only makes the image usable on its own.
+############################################################
+FROM node:${NODE_VERSION} AS dev
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+EXPOSE 3000
+# -H 0.0.0.0 so the port is reachable from outside the container.
+CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0"]
+
+############################################################
 # builder — compiles the standalone server
 ############################################################
 FROM node:${NODE_VERSION} AS builder

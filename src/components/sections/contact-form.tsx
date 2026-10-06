@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MascotLoader } from "@/components/mascot/mascot-loader-client";
 import {
   budgetOptions,
   serviceOptions,
@@ -238,10 +239,24 @@ export function ContactForm() {
             </div>
 
             {notice ? (
-              <p role="alert" className="text-sm text-red-600">
+              <p role="alert" className="text-sm text-danger">
                 {notice}
               </p>
             ) : null}
+
+            <AnimatePresence>
+              {status === "submitting" ? (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3, ease }}
+                  className="overflow-hidden"
+                >
+                  <MascotLoader compact label="Sending your enquiry" />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
 
             <div className="flex flex-col gap-4 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-xs leading-relaxed text-ink-faint">
@@ -276,7 +291,7 @@ function inputClass(error?: string) {
   return cn(
     "h-11 w-full rounded-xl border bg-paper px-3.5 text-[0.9375rem] text-ink transition-colors duration-200 outline-none placeholder:text-ink-faint/70",
     "focus:border-accent focus:ring-2 focus:ring-accent/15",
-    error ? "border-red-400" : "border-line hover:border-ink/20",
+    error ? "border-danger-line" : "border-line hover:border-ink/20",
   );
 }
 
@@ -310,7 +325,7 @@ function Field({
       {children}
 
       {error ? (
-        <p className="text-xs text-red-600" role="alert">
+        <p className="text-xs text-danger" role="alert">
           {error}
         </p>
       ) : null}

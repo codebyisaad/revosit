@@ -64,7 +64,7 @@ export function ProjectCard({
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="rounded-full border border-white/40 bg-white/75 px-2.5 py-1 text-[0.6875rem] font-medium text-ink backdrop-blur-sm">
+    <span className="rounded-full border border-black/5 bg-white/80 px-2.5 py-1 text-[0.6875rem] font-medium text-neutral-900 backdrop-blur-sm">
       {children}
     </span>
   );

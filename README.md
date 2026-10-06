@@ -14,6 +14,7 @@ build time; the only server route is the contact endpoint.
 | Language   | TypeScript (strict)                                  |
 | Styling    | Tailwind CSS v4 — tokens in `src/app/globals.css`    |
 | Animation  | Motion (`motion/react`), reduced-motion aware        |
+| Theming    | Light + dark, class-based, no flash on load          |
 | Icons      | lucide-react                                         |
 | Type       | Geist, Geist Mono, Instrument Serif via `next/font`  |
 | Email      | SMTP via nodemailer (optional)                        |
@@ -24,10 +25,22 @@ The only real image files are case study screenshots under `public/work/`.
 
 ## Getting started
 
+With Docker — matches production, no local Node needed:
+
+```bash
+docker compose -f docker-compose.dev.yml up    # http://localhost:3000
+```
+
+Hot reload is on, source is bind-mounted, and `node_modules` and `.next` are
+masked by anonymous volumes so the Linux build inside the container is never
+shadowed by a macOS one on the host.
+
+Or directly:
+
 ```bash
 npm install
-cp .env.example .env.local   # optional for local dev
-npm run dev                  # http://localhost:3000
+cp .env.example .env.local
+npm run dev
 ```
 
 Other scripts:
@@ -116,6 +129,44 @@ applies them with no rebuild.
 
 The client validates with the same module before submitting, so error messages
 match on both sides.
+
+## Theming
+
+Both themes are declared as raw values in `:root` and `.dark`, and the Tailwind
+colour utilities are declared `inline` in `@theme` so they compile to `var(...)`
+references. That is what lets one class — `bg-paper`, `text-ink` — follow the
+theme without a single `dark:` variant in the components.
+
+A blocking script in `<head>` sets the class before first paint, so the page
+never flashes the wrong theme. It honours a stored choice first and the OS
+preference otherwise; the toggle writes the choice to `localStorage`, and until
+someone makes one the page keeps following the OS.
+
+Every pairing in both themes clears WCAG AA. The tightest is `ink-faint` at
+4.98:1 in dark and 4.59:1 in light. axe-core reports zero violations on every
+page in both themes.
+
+Colours that cannot follow the theme — text on a filled accent or ink block —
+have their own tokens (`on-accent`, `on-ink`) rather than being hardcoded to
+white.
+
+## Revo, the mascot
+
+`src/components/mascot/` holds an original character used for loading states.
+The body is the logo mark stood upright and the antenna bulb is its orbiting
+node, drawn purely from theme tokens so it inverts with the theme for free.
+
+`pose` and `activity` are independent on purpose. The run cycle never changes,
+which is what keeps it feeling composed rather than cartoonish; what varies is
+the job it is doing as it crosses — thinking, building, searching or juggling —
+redrawn on every pass, so a slow page shows a short sequence of different
+moments rather than one looping gif.
+
+It appears in every route's `loading.tsx`, under the contact form while a
+submission is in flight, and standing idle on the 404 page. The loader is
+deliberately `ssr: false`: a loading animation gains nothing from server
+rendering, and skipping it lets the component pick a random activity as its
+initial state with no chance of a hydration mismatch.
 
 ## Design system
 

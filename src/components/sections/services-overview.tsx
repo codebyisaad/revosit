@@ -37,7 +37,7 @@ export function ServicesOverview() {
                   href={`/services#${service.slug}`}
                   className="group flex h-full flex-col rounded-2xl border border-line bg-paper-raised p-7 transition-all duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:border-ink/20 hover:shadow-[0_18px_48px_-24px_oklch(0.2_0.02_277/0.3)]"
                 >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent-ink transition-colors duration-300 group-hover:bg-accent group-hover:text-white">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent-ink transition-colors duration-300 group-hover:bg-accent group-hover:text-on-accent">
                     <Icon size={20} strokeWidth={1.75} />
                   </span>
 

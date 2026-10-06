@@ -1,35 +1,113 @@
 @import "tailwindcss";
 
+/* Class-based dark mode. `dark:` utilities resolve against a .dark ancestor,
+   which the inline script in the layout sets before first paint. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ------------------------------------------------------------------
    Design tokens
-   Light, paper-first palette: near-black ink, hairline rules, one
-   indigo accent. Colours are in oklch so tints stay perceptually even.
+
+   Colour utilities are declared `inline` so they compile to var(...)
+   references rather than frozen values — that is what lets a single
+   class like `bg-paper` follow the theme. Raw values live in :root
+   and .dark below.
+
+   Everything is oklch so tints stay perceptually even across themes.
 ------------------------------------------------------------------- */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-paper-sunken: var(--paper-sunken);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+
+  /* Text that sits on top of a filled accent block. */
+  --color-on-accent: var(--on-accent);
+  /* Text that sits on top of a filled ink block. */
+  --color-on-ink: var(--on-ink);
+
+  /* Validation errors. Lightened in dark so it stays legible, not just red. */
+  --color-danger: var(--danger);
+  --color-danger-line: var(--danger-line);
+}
+
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
   --font-display: var(--font-instrument-serif), ui-serif, Georgia, serif;
 
-  --color-paper: oklch(0.986 0.002 106);
-  --color-paper-raised: oklch(1 0 0);
-  --color-paper-sunken: oklch(0.966 0.003 106);
-
-  --color-ink: oklch(0.17 0.014 277);
-  --color-ink-soft: oklch(0.44 0.013 277);
-  --color-ink-faint: oklch(0.54 0.011 277);
-
-  --color-line: oklch(0.905 0.005 277);
-  --color-line-soft: oklch(0.945 0.004 277);
-
-  --color-accent: oklch(0.53 0.215 277);
-  --color-accent-hover: oklch(0.47 0.215 277);
-  --color-accent-ink: oklch(0.39 0.18 277);
-  --color-accent-soft: oklch(0.955 0.028 277);
-
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   --animate-marquee: marquee 42s linear infinite;
   --animate-drift: drift 18s ease-in-out infinite;
+  --animate-track: track-scroll 0.8s linear infinite;
+}
+
+/* Light — paper-first, near-black ink, one indigo accent. */
+:root {
+  color-scheme: light;
+
+  --paper: oklch(0.986 0.002 106);
+  --paper-raised: oklch(1 0 0);
+  --paper-sunken: oklch(0.966 0.003 106);
+
+  --ink: oklch(0.17 0.014 277);
+  --ink-soft: oklch(0.44 0.013 277);
+  --ink-faint: oklch(0.54 0.011 277);
+
+  --line: oklch(0.905 0.005 277);
+  --line-soft: oklch(0.945 0.004 277);
+
+  --accent: oklch(0.53 0.215 277);
+  --accent-hover: oklch(0.47 0.215 277);
+  --accent-ink: oklch(0.39 0.18 277);
+  --accent-soft: oklch(0.955 0.028 277);
+
+  --on-accent: oklch(1 0 0);
+  --on-ink: oklch(0.986 0.002 106);
+
+  --danger: oklch(0.52 0.21 25);
+  --danger-line: oklch(0.68 0.17 25);
+}
+
+/* Dark — deep indigo-grey rather than black, so the accent still reads
+   as colour and large fills do not vibrate. Every pairing below clears
+   WCAG AA: ink 16.9:1, ink-soft 8.5:1, ink-faint 5.4:1 on --paper. */
+.dark {
+  color-scheme: dark;
+
+  --paper: oklch(0.185 0.013 277);
+  --paper-raised: oklch(0.225 0.015 277);
+  --paper-sunken: oklch(0.155 0.012 277);
+
+  --ink: oklch(0.965 0.004 277);
+  --ink-soft: oklch(0.755 0.013 277);
+  --ink-faint: oklch(0.635 0.015 277);
+
+  --line: oklch(0.305 0.016 277);
+  --line-soft: oklch(0.253 0.014 277);
+
+  --accent: oklch(0.7 0.175 277);
+  --accent-hover: oklch(0.77 0.16 277);
+  --accent-ink: oklch(0.8 0.145 277);
+  --accent-soft: oklch(0.285 0.075 277);
+
+  --on-accent: oklch(0.18 0.013 277);
+  --on-ink: oklch(0.185 0.013 277);
+
+  --danger: oklch(0.72 0.17 25);
+  --danger-line: oklch(0.6 0.16 25);
 }
 
 @keyframes marquee {
@@ -38,6 +116,13 @@
   }
   to {
     transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* The dashes under a running mascot, sliding against the direction of travel. */
+@keyframes track-scroll {
+  to {
+    background-position-x: -72px;
   }
 }
 
@@ -68,7 +153,20 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Display type runs tight and dark; set once rather than per heading. */
+  /* Theme flips should feel deliberate, not instant. Suppressed on the very
+     first paint by the .theme-boot class the inline script removes. */
+  body,
+  body * {
+    transition:
+      background-color 0.25s var(--ease-out-expo),
+      border-color 0.25s var(--ease-out-expo);
+  }
+
+  .theme-boot,
+  .theme-boot * {
+    transition: none !important;
+  }
+
   h1,
   h2,
   h3,
@@ -84,7 +182,7 @@
 
   ::selection {
     background-color: var(--color-accent);
-    color: white;
+    color: var(--color-on-accent);
   }
 
   :focus-visible {
@@ -93,7 +191,6 @@
     border-radius: 2px;
   }
 
-  /* Anchored sections clear the sticky header. */
   [id] {
     scroll-margin-top: 6rem;
   }
@@ -117,7 +214,6 @@
    Utilities
 ------------------------------------------------------------------- */
 @utility grid-lines {
-  /* Hairline graph paper, used behind hero and CTA bands. */
   background-image:
     linear-gradient(to right, var(--color-line-soft) 1px, transparent 1px),
     linear-gradient(to bottom, var(--color-line-soft) 1px, transparent 1px);
