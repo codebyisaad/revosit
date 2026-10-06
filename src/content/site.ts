@@ -1,9 +1,9 @@
 export const site = {
   name: "Revosit",
   legalName: "Revosit",
-  tagline: "Engineering partner for full-stack, Salesforce and AI",
+  tagline: "Engineering partner for full-stack, Salesforce, data and AI",
   description:
-    "Revosit is a B2B software house building full-stack products, Salesforce solutions and AI integrations — available as a delivery partner or as embedded engineers through staff augmentation.",
+    "Revosit is a B2B software house building full-stack products, Salesforce solutions, data and ML pipelines, and AI integrations across fintech, healthcare, real estate and logistics — as a delivery partner or as embedded engineers.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://revosit.com",
   email: "support@revosit.com",
   locale: "en_US",
@@ -106,8 +106,12 @@ export const stackGroups = [
     items: ["Apex", "Lightning Web Components", "Flow", "Sales Cloud", "Service Cloud", "Salesforce DX", "MuleSoft"],
   },
   {
-    discipline: "AI & data",
-    items: ["Claude", "LangGraph", "pgvector", "RAG pipelines", "Evaluation harnesses", "dbt", "Snowflake"],
+    discipline: "Data & ML",
+    items: ["Airflow", "dbt", "Spark", "Kafka", "Snowflake", "BigQuery", "MLflow", "scikit-learn", "PyTorch"],
+  },
+  {
+    discipline: "AI",
+    items: ["Claude", "LangGraph", "pgvector", "RAG pipelines", "Evaluation harnesses", "Web Push & agents"],
   },
   {
     discipline: "Platform",
@@ -138,23 +142,82 @@ export const principles = [
   },
 ] as const;
 
+export const industries = [
+  {
+    name: "Fintech",
+    summary:
+      "Payments, ledgers and reconciliation, where a rounding error is an incident and every write needs an audit trail.",
+    work: ["Payment provider migrations", "Reconciliation pipelines", "KYC and onboarding flows"],
+  },
+  {
+    name: "Healthcare",
+    summary:
+      "Clinical and patient-facing systems built around consent, access control and data that cannot be casually copied.",
+    work: ["Patient-facing PWAs", "Scheduling and matching", "Consent-aware data access"],
+  },
+  {
+    name: "Real estate",
+    summary:
+      "Listing, valuation and portfolio systems where the hard part is the data arriving from fifty places in forty shapes.",
+    work: ["Valuation models", "Listing ingestion", "Portfolio reporting"],
+  },
+  {
+    name: "Logistics",
+    summary:
+      "Tracking and fulfilment, where the system is only as good as how quickly it tells you something went wrong.",
+    work: ["Carrier integrations", "Event-sourced tracking", "Warehouse and ERP sync"],
+  },
+  {
+    name: "Insurance",
+    summary:
+      "Underwriting, claims and policy archives, usually with a compliance team who need to see how an answer was reached.",
+    work: ["Policy retrieval", "Claims automation", "Audit trails for AI output"],
+  },
+  {
+    name: "B2B SaaS",
+    summary:
+      "Platform teams past product-market fit, where the roadmap is now bounded by engineering capacity.",
+    work: ["Replatforms", "Multi-tenant architecture", "Embedded squads"],
+  },
+] as const;
+
 export const stack = [
   "TypeScript",
   "Next.js",
   "React",
   "Node.js",
   "Python",
+  "Go",
+  "FastAPI",
   "PostgreSQL",
+  "PostGIS",
+  "Redis",
   "Salesforce",
   "Apex",
   "LWC",
   "MuleSoft",
-  "AWS",
-  "Azure",
-  "Terraform",
-  "Kubernetes",
+  "Airflow",
+  "dbt",
+  "Spark",
+  "Kafka",
+  "Snowflake",
+  "BigQuery",
+  "Databricks",
+  "MLflow",
+  "scikit-learn",
+  "PyTorch",
+  "Claude",
   "LangGraph",
   "pgvector",
-  "Snowflake",
-  "dbt",
+  "Celery",
+  "AWS",
+  "Azure",
+  "GCP",
+  "Terraform",
+  "Kubernetes",
+  "Docker",
+  "GitHub Actions",
+  "OpenTelemetry",
+  "Grafana",
+  "Playwright",
 ] as const;

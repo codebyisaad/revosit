@@ -1,3 +1,9 @@
+/**
+ * Arxiron is real and is described from its own README. Every other entry is
+ * SAMPLE MARKETING COPY written to show the shape of a case study — plausible,
+ * but not an account of work actually done. Replace them, and get written
+ * client sign-off before naming a client or publishing a metric.
+ */
 export type Project = {
   slug: string;
   client: string;
@@ -137,6 +143,58 @@ export const projects: Project[] = [
     ],
     tech: ["Claude", "Python", "pgvector", "LangGraph", "Azure"],
     hue: 158,
+  },
+  {
+    slug: "property-valuation-pipeline",
+    client: "European property marketplace",
+    title: "An automated valuation model agents were willing to quote from",
+    industry: "Real estate",
+    year: "2026",
+    service: "Data & ML pipelines",
+    summary:
+      "A valuation model rebuilt around the pipeline feeding it, with freshness and drift monitoring that tells the team when a number has stopped being trustworthy.",
+    challenge:
+      "Listing data arrived from eleven sources in eleven shapes, was cleaned by hand in spreadsheets, and reached the model weeks late. Agents had quietly stopped quoting the automated estimate because it was wrong often enough to be embarrassing, which made the whole feature decorative.",
+    approach: [
+      "Replaced the manual clean-up with orchestrated ingestion per source, each with its own schema contract and quarantine for rows that fail it",
+      "Modelled the warehouse in dbt so every figure has tested lineage back to the source row that produced it",
+      "Split training and inference into separate pipelines with versioned datasets, so a model can be reproduced months later",
+      "Added freshness, drift and prediction-interval monitoring, and taught the product to withhold an estimate rather than show a bad one",
+      "Published confidence alongside every valuation so agents could see when to trust it",
+    ],
+    results: [
+      { label: "Data latency", value: "Weeks to under an hour" },
+      { label: "Reproducibility", value: "Any past valuation, re-derivable" },
+      { label: "Agent adoption", value: "Back in the quoting flow" },
+    ],
+    tech: ["Python", "Airflow", "dbt", "Snowflake", "MLflow", "scikit-learn", "Terraform"],
+    hue: 45,
+  },
+  {
+    slug: "payments-reconciliation-pipeline",
+    client: "Cross-border payments provider",
+    title: "Reconciliation that closes in minutes instead of days",
+    industry: "Fintech",
+    year: "2025",
+    service: "Data & ML pipelines",
+    summary:
+      "An event-driven reconciliation pipeline matching ledger, processor and bank records, with every unmatched penny surfaced the same day rather than at month end.",
+    challenge:
+      "Three systems disagreed about what had been paid, and the difference was found by a finance team exporting CSVs and sorting them by hand. Month-end close took days, breaks were discovered long after the counterparty could be asked about them, and nobody could say with confidence what the real exposure was.",
+    approach: [
+      "Streamed ledger, processor and bank events into one normalised transaction record keyed on a stable identifier",
+      "Made matching idempotent and replayable, so a late or duplicated file corrects the picture instead of corrupting it",
+      "Classified breaks by cause — timing, fees, FX, genuinely missing — so the finance team triaged rather than searched",
+      "Gave every number a drill-through to the source events that produced it",
+      "Alerted on unmatched value crossing a threshold rather than waiting for the close",
+    ],
+    results: [
+      { label: "Close", value: "Days to under an hour" },
+      { label: "Break discovery", value: "Month-end to same day" },
+      { label: "Audit", value: "Every figure traceable to source" },
+    ],
+    tech: ["Python", "Kafka", "Airflow", "dbt", "PostgreSQL", "BigQuery", "Kubernetes"],
+    hue: 100,
   },
   {
     slug: "embedded-platform-team",

@@ -50,6 +50,7 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   --animate-marquee: marquee 42s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 38s linear infinite;
   --animate-drift: drift 18s ease-in-out infinite;
   --animate-track: track-scroll 0.8s linear infinite;
 }
@@ -123,6 +124,15 @@
 @keyframes track-scroll {
   to {
     background-position-x: -72px;
+  }
+}
+
+@keyframes marquee-reverse {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
 

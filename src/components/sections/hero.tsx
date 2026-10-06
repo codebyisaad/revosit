@@ -40,9 +40,9 @@ export function Hero() {
             variants={fadeUpFast}
             className="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft"
           >
-            Revosit is a full-stack, Salesforce and AI engineering partner. Hire us
-            to own the delivery end to end — or to embed senior engineers in the
-            team you already have.
+            Revosit is a full-stack, Salesforce, data and AI engineering partner for
+            fintech, healthcare and real estate. Hire us to own the delivery end
+            to end — or to embed senior engineers in the team you already have.
           </motion.p>
 
           <motion.div
@@ -77,7 +77,10 @@ export function Hero() {
         transition={{ delay: 0.45 }}
         className="mt-16 sm:mt-20"
       >
-        <Marquee items={stack} />
+        <div className="flex flex-col gap-3">
+          <Marquee items={stack.slice(0, Math.ceil(stack.length / 2))} />
+          <Marquee items={stack.slice(Math.ceil(stack.length / 2))} reverse />
+        </div>
       </motion.div>
     </section>
   );

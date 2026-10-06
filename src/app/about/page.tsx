@@ -33,7 +33,7 @@ export default function AboutPage() {
             <span className="font-display text-accent italic">delivery</span>
           </>
         }
-        description="We work with B2B teams who have already found their market and now need the engineering to keep up with it — as a delivery partner, or as engineers inside their own team."
+        description="We work with B2B teams across fintech, healthcare, real estate and logistics who have already found their market and now need the engineering to keep up with it — as a delivery partner, or as engineers inside their own team."
       >
         <Button href="/contact">
           Work with us
@@ -53,26 +53,27 @@ export default function AboutPage() {
             <RevealGroup delay={0.1} className="flex flex-col gap-5 text-[1.0625rem] leading-relaxed text-ink-soft">
               <RevealItem>
                 <p>
-                  {site.name} is a B2B engineering practice. Our work sits in three
-                  places that tend to collide in a growing company: the product your
-                  customers use, the Salesforce org your revenue team runs on, and the
-                  AI features everyone now expects you to ship.
+                  {site.name} is a B2B engineering practice. Our work sits in four places
+                  that tend to collide in a growing company: the product your customers
+                  use, the Salesforce org your revenue team runs on, the pipelines
+                  feeding both, and the AI features everyone now expects you to ship.
                 </p>
               </RevealItem>
               <RevealItem>
                 <p>
                   Keeping those under one team is the point. When the product needs to
-                  write back into Salesforce, or an assistant needs retrieval over data
-                  that lives in three systems, there is no vendor boundary to argue
-                  across — the same delivery lead owns both sides of the integration.
+                  write back into Salesforce, or a model needs features the warehouse
+                  does not have yet, there is no vendor boundary to argue across — the
+                  same delivery lead owns both sides of the integration.
                 </p>
               </RevealItem>
               <RevealItem>
                 <p>
-                  We take work two ways. Either we own an outcome end to end, or we
-                  embed engineers into your team and your process. Clients move between
-                  the two as their roadmap changes, and we would rather adjust the
-                  contract than pretend one shape fits every phase.
+                  Most of it has been in regulated, data-heavy domains — fintech, healthcare,
+                  real estate, logistics and insurance — where being roughly right is not
+                  good enough. That constraint has shaped how we build everywhere else.
+                  We take work two ways: we own an outcome end to end, or we embed
+                  engineers into your team and your process.
                 </p>
               </RevealItem>
             </RevealGroup>

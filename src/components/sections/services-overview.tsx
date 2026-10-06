@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, BrainCircuit, CloudCog, Layers, Users } from "lucide-react";
+import { ArrowUpRight, BrainCircuit, CloudCog, Layers, Users, Workflow } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { RevealGroup, RevealItem } from "@/components/ui/reveal";
@@ -10,6 +10,7 @@ export const serviceIcons: Record<string, LucideIcon> = {
   "full-stack": Layers,
   salesforce: CloudCog,
   "ai-integrations": BrainCircuit,
+  "data-ml": Workflow,
   "staff-augmentation": Users,
 };
 
@@ -19,20 +20,21 @@ export function ServicesOverview() {
       <Container>
         <SectionHeading
           eyebrow="What we do"
-          title="Four capabilities, one accountable team"
-          description="Most partners hand you a specialist and a handoff. We keep product engineering, Salesforce and AI under the same delivery lead, so the integrations between them are nobody else's problem."
+          title="Five capabilities, one accountable team"
+          description="Most partners hand you a specialist and a handoff. We keep product engineering, Salesforce, data and AI under the same delivery lead, so the integrations between them are nobody else's problem."
         />
 
         <RevealGroup
           delay={0.1}
-          className="mt-14 grid gap-4 sm:grid-cols-2"
+          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-6"
           as="ul"
         >
-          {services.map((service) => {
+          {services.map((service, index) => {
             const Icon = serviceIcons[service.slug] ?? Layers;
+            const span = index < 3 ? "lg:col-span-2" : "lg:col-span-3";
 
             return (
-              <RevealItem key={service.slug} as="li">
+              <RevealItem key={service.slug} as="li" className={span}>
                 <Link
                   href={`/services#${service.slug}`}
                   className="group flex h-full flex-col rounded-2xl border border-line bg-paper-raised p-7 transition-all duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:border-ink/20 hover:shadow-[0_18px_48px_-24px_oklch(0.2_0.02_277/0.3)]"

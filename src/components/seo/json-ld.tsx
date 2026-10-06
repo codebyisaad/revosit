@@ -1,5 +1,6 @@
 import { site } from "@/content/site";
 import { services } from "@/content/services";
+import { industries } from "@/content/site";
 
 export function JsonLd({ data }: { data: object }) {
   return (
@@ -24,13 +25,17 @@ export function organizationSchema() {
     logo: `${site.url}/icon`,
     image: `${site.url}/opengraph-image`,
     sameAs: Object.values(site.social),
-    areaServed: "Worldwide",
     knowsAbout: [
       "Full-stack development",
       "Salesforce implementation",
+      "Data engineering",
+      "ETL pipelines",
+      "Machine learning engineering",
       "AI integration",
       "Staff augmentation",
     ],
+    areaServed: "Worldwide",
+    serviceType: industries.map((industry) => `${industry.name} software development`),
     contactPoint: {
       "@type": "ContactPoint",
       email: site.email,

@@ -41,6 +41,12 @@ export const metadata: Metadata = {
   keywords: [
     "software house",
     "software development company",
+    "fintech software development",
+    "healthcare software development",
+    "real estate software development",
+    "ETL pipeline development",
+    "data engineering services",
+    "machine learning engineering",
     "full-stack development agency",
     "Salesforce consulting partner",
     "Salesforce development",

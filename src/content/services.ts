@@ -63,6 +63,24 @@ export const services: Service[] = [
     tech: ["Claude", "LangGraph", "pgvector", "Python", "TypeScript", "Snowflake"],
   },
   {
+    slug: "data-ml",
+    title: "Data & ML pipelines",
+    summary:
+      "ETL that runs on time and fails loudly, a warehouse people trust, and models that get retrained rather than quietly rotting.",
+    outcomes: [
+      "Replace brittle overnight scripts nobody wants to touch",
+      "Give analysts one number for revenue instead of four",
+      "Get a model out of a notebook and into something on-call can support",
+    ],
+    deliverables: [
+      "Orchestrated pipelines with retries, backfills and alerting",
+      "Modelled warehouse with tested transformations and lineage",
+      "Training and inference pipelines with versioned data and models",
+      "Monitoring for drift, freshness and cost",
+    ],
+    tech: ["Airflow", "dbt", "Spark", "Kafka", "Snowflake", "BigQuery", "MLflow", "Python"],
+  },
+  {
     slug: "staff-augmentation",
     title: "Staff augmentation",
     summary:
