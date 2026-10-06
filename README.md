@@ -141,6 +141,44 @@ for users who ask for that.
 
 ## Deploying
 
-Vercel is the straightforward option: import the repo, set the environment
-variables from `.env.example`, deploy. Any Node host works too —
-`npm run build && npm start`.
+Push to `main`. `.github/workflows/deploy.yml` runs ESLint, `tsc --noEmit` and a
+production build, then — only if all three pass — rsyncs the source to the VPS,
+rebuilds the image there and restarts the container. Nothing is published to a
+registry.
+
+The workflow then waits for the container healthcheck and finally curls
+`https://revosit.com/` through nginx and TLS, so a green run means the live site
+actually answered, not just that the build succeeded.
+
+### One-time setup
+
+Add two repository secrets under **Settings → Secrets and variables → Actions**:
+
+| Secret | Value |
+| --- | --- |
+| `SSH_HOST` | the server's IP |
+| `SSH_PRIVATE_KEY` | contents of the deploy key, including the BEGIN/END lines |
+
+Host, user and path are plain `env:` values at the top of the workflow — edit
+them there rather than adding more secrets.
+
+### What the deploy will not touch
+
+`.env` lives only on the server and is excluded from the sync, so credentials
+survive every deploy. rsync runs with `--delete` so files removed from the repo
+disappear from the server, but excluded paths are never deleted.
+
+`NEXT_PUBLIC_SITE_URL` is inlined at build time, so the workflow passes it to
+both the CI build and the server build. Changing the domain means editing
+`SITE_URL` in the workflow, not just the server's `.env`.
+
+### Server layout
+
+```
+/root/revosit/            source, synced by CI
+/root/revosit/.env        credentials, never synced
+/etc/nginx/conf.d/        vhosts, as plain files (no sites-enabled symlinks)
+```
+
+nginx proxies `revosit.com` and `www.revosit.com` to `127.0.0.1:8099`. The
+container binds to loopback only, so nginx is the sole public entry point.

@@ -1,0 +1,109 @@
+name: Deploy
+
+# Every push to main is checked, then shipped. Nothing is published to a
+# registry — the image is built on the server from the synced source, which is
+# how the other apps on that box deploy too.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Two deploys overlapping would race on the same compose project. Queue them
+# rather than cancelling: a half-finished deploy is worse than a slow one.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  DEPLOY_USER: root
+  DEPLOY_PATH: /root/revosit
+  SITE_URL: https://revosit.com
+
+jobs:
+  check:
+    name: Lint, types, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: ESLint
+        run: npx eslint .
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      # Catches anything that only fails in a production build — and the same
+      # NEXT_PUBLIC_SITE_URL the image is built with, since it is inlined.
+      - name: Production build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ env.SITE_URL }}
+
+  deploy:
+    name: Ship to VPS
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Authorise SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      # --delete keeps the server honest about removed files. .env is excluded,
+      # and rsync does not delete excluded paths, so the server's credentials
+      # survive every deploy.
+      - name: Sync source
+        run: |
+          rsync -az --delete \
+            --exclude .git \
+            --exclude .github \
+            --exclude node_modules \
+            --exclude .next \
+            --exclude .env \
+            -e "ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes" \
+            ./ "$DEPLOY_USER@${{ secrets.SSH_HOST }}:$DEPLOY_PATH/"
+
+      - name: Build and restart
+        run: |
+          ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes \
+            "$DEPLOY_USER@${{ secrets.SSH_HOST }}" \
+            "cd $DEPLOY_PATH && NEXT_PUBLIC_SITE_URL=$SITE_URL docker compose up -d --build && docker image prune -f"
+
+      - name: Wait for healthy container
+        run: |
+          ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes \
+            "$DEPLOY_USER@${{ secrets.SSH_HOST }}" '
+              for i in $(seq 1 30); do
+                state=$(docker inspect --format "{{.State.Health.Status}}" revosit-web 2>/dev/null)
+                [ "$state" = "healthy" ] && echo "container healthy" && exit 0
+                sleep 2
+              done
+              echo "container did not become healthy:"
+              docker logs revosit-web --tail 40
+              exit 1
+            '
+
+      # Through nginx and TLS, not just the container — proves the whole path.
+      - name: Verify live site
+        run: |
+          for i in $(seq 1 10); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/")
+            if [ "$code" = "200" ]; then
+              echo "$SITE_URL responded 200"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "$SITE_URL last responded $code"
+          exit 1
