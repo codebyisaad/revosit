@@ -211,6 +211,52 @@
 }
 
 /* ------------------------------------------------------------------
+   First-load intro
+
+   The overlay ships in the server HTML but is display:none by default, so
+   returning visitors and anyone on a second page never pay for it — there is
+   no element to paint and nothing to tear down. The inline script opts a
+   first-time visitor in by adding .splash-active to <html>.
+------------------------------------------------------------------- */
+.site-splash {
+  display: none;
+}
+
+.splash-active .site-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background-color: var(--color-paper);
+}
+
+/* Hold the page still underneath while the intro is up. */
+.splash-active body {
+  overflow: hidden;
+}
+
+.site-splash[data-leaving="true"] {
+  animation: splash-out 0.55s var(--ease-out-expo) forwards;
+}
+
+@keyframes splash-run {
+  from {
+    left: -20%;
+  }
+  to {
+    left: 110%;
+  }
+}
+
+@keyframes splash-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* ------------------------------------------------------------------
    Utilities
 ------------------------------------------------------------------- */
 @utility grid-lines {

@@ -20,6 +20,14 @@ const script = `
         root.classList.remove('theme-boot');
       });
     });
+
+    // The intro only plays on the first page of a session, and never for
+    // someone who has asked for reduced motion. Decided here rather than in
+    // React so the overlay is painted with the very first frame instead of
+    // appearing on top of content that has already rendered.
+    var seen = sessionStorage.getItem('splash-seen');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!seen && !reduced) root.classList.add('splash-active');
   } catch (e) {}
 })();
 `;

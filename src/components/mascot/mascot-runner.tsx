@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ACTIVITY_CAPTIONS,
-  Mascot,
   randomActivity,
   type Activity,
-} from "@/components/mascot/mascot";
+} from "@/components/mascot/activities";
+import { Mascot } from "@/components/mascot/mascot";
 import { cn } from "@/lib/utils";
 
 /** One crossing of the track, in seconds. */

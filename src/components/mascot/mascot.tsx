@@ -1,6 +1,11 @@
 "use client";
 
 import { motion } from "motion/react";
+import {
+  ACTIVITY_CAPTIONS,
+  type Activity,
+  type Pose,
+} from "@/components/mascot/activities";
 import { cn } from "@/lib/utils";
 
 /**
@@ -15,23 +20,6 @@ import { cn } from "@/lib/utils";
  * Keeping those independent is what lets the run stay consistent while the
  * personality varies per load.
  */
-export const ACTIVITIES = ["thinking", "building", "searching", "juggling"] as const;
-
-export type Activity = (typeof ACTIVITIES)[number];
-export type Pose = "idle" | "running";
-
-export function randomActivity(exclude?: Activity): Activity {
-  const pool = exclude ? ACTIVITIES.filter((a) => a !== exclude) : ACTIVITIES;
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
-export const ACTIVITY_CAPTIONS: Record<Activity, string> = {
-  thinking: "Thinking it through",
-  building: "Putting it together",
-  searching: "Finding the thing",
-  juggling: "Keeping plates spinning",
-};
-
 /** One stride. Everything that cycles with the legs shares this. */
 const STRIDE = 0.44;
 

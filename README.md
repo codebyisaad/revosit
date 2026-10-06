@@ -168,6 +168,43 @@ deliberately `ssr: false`: a loading animation gains nothing from server
 rendering, and skipping it lets the component pick a random activity as its
 initial state with no chance of a hydration mismatch.
 
+## Seeing the loading states
+
+Static pages render instantly, so the loading UI never gets a chance to appear
+in normal local use. Two development-only routes exist for that, both under a
+`/dev` segment whose layout calls `notFound()` when `NODE_ENV` is production and
+which is marked `noindex` regardless:
+
+| Route | What it shows |
+| --- | --- |
+| `/dev/mascot` | Every pose and activity pinned side by side, plus both loader sizes |
+| `/dev/slow` | A route that stalls six seconds, exercising the real `loading.tsx` boundary |
+
+The first-load intro can be replayed at any time by clearing session storage:
+
+```js
+sessionStorage.removeItem('splash-seen')
+```
+
+## The first-load intro
+
+The overlay ships inside the server HTML but is `display: none` by default, so
+returning visitors and anyone on a second page never pay for it — there is no
+element to paint and nothing to tear down. The inline script in `<head>` opts a
+first-time visitor in by adding a class to `<html>`, which means the intro is
+painted with the very first frame rather than appearing on top of content that
+has already drawn.
+
+It is bounded on both sides: never shorter than 1.5s so it reads as intentional,
+never longer than 3s so a stalled asset cannot trap anyone behind it. It waits
+for `window.load` between those bounds. Anyone with `prefers-reduced-motion`
+never sees it, and it plays once per session rather than once per page.
+
+Measured against a production build, first load LCP was 608ms versus 572ms on a
+repeat visit. The intro does not become the LCP element — LCP does not account
+for occlusion by an overlay, so the `h1` underneath still counts. Core Web Vitals
+are effectively unchanged; the 1.5s is perceived wait, not measured regression.
+
 ## Design system
 
 Tokens live in the `@theme` block of `src/app/globals.css` — colours in oklch, one

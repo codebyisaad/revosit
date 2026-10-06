@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Mascot, randomActivity, type Activity } from "@/components/mascot/mascot";
+import { randomActivity, type Activity } from "@/components/mascot/activities";
+import { Mascot } from "@/components/mascot/mascot";
 
 /** How long Revo sticks with one activity before finding something else to do. */
 const DWELL_MS = 5200;
