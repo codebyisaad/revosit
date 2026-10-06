@@ -36,6 +36,13 @@ jobs:
       - name: ESLint
         run: npx eslint .
 
+      # Next generates the PageProps/LayoutProps globals into .next/types during
+      # a build. tsc runs before that here, so on a clean checkout they do not
+      # exist yet and every typed route fails to resolve. typegen emits them
+      # without paying for a full build.
+      - name: Generate route types
+        run: npx next typegen
+
       - name: Type check
         run: npx tsc --noEmit
 
